@@ -4,6 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
+    "deploy": "npx hardhat ignition deploy ./ignition/modules/SheWell.ts",
     "node": "npx hardhat node",
     "compile": "npx hardhat compile",
     "test": "npx hardhat test"
@@ -14,6 +15,7 @@
     "prettier": "^3.3.2"
   },
   "dependencies": {
-    "@nomicfoundation/hardhat-toolbox": "^5.0.0"
+    "@nomicfoundation/hardhat-toolbox": "^5.0.0",
+    "@openzeppelin/contracts": "^5.0.2"
   }
 }
