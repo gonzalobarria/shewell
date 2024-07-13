@@ -81,9 +81,7 @@ const Register = () => {
 
   return (
     <div className="flex flex-1 flex-col p-4 md:p-8 max-w-4xl mx-auto bg-background m-8 shadow-lg rounded-lg gap-y-5">
-      <h1 className="text-xl font-semibold text-center">
-        Register as a User of SheWell
-      </h1>
+      <h1 className="text-xl font-semibold text-center">New to SheWell?</h1>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
           <FormField
@@ -91,29 +89,9 @@ const Register = () => {
             name="name"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>
-                  Con qué nombre quieres que la gente te vea
-                </FormLabel>
+                <FormLabel>How do you want people to call you?</FormLabel>
                 <FormControl>
                   <Input placeholder="superCoolChick" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name="averageDurationCycle"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Promedio de duración del Ciclo</FormLabel>
-                <FormControl>
-                  <Input
-                    type="number"
-                    placeholder="cuántos días ha durado?"
-                    {...field}
-                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -159,10 +137,27 @@ const Register = () => {
           />
           <FormField
             control={form.control}
+            name="averageDurationCycle"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Average duration of your cycle</FormLabel>
+                <FormControl>
+                  <Input
+                    type="number"
+                    placeholder="(in days)"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
             name="firstDayPeriod"
             render={({ field }) => (
               <FormItem className="flex flex-col">
-                <FormLabel>First Day of your Actual Period</FormLabel>
+                <FormLabel>Start of Last Period</FormLabel>
                 <Popover>
                   <PopoverTrigger asChild>
                     <FormControl>
@@ -200,7 +195,7 @@ const Register = () => {
             name="lastDayPeriod"
             render={({ field }) => (
               <FormItem className="flex flex-col">
-                <FormLabel>Last Day of your Actual Period</FormLabel>
+                <FormLabel>End of Last Period</FormLabel>
                 <Popover>
                   <PopoverTrigger asChild>
                     <FormControl>

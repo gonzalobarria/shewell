@@ -187,9 +187,7 @@ export default function McFollow({ addEvent, event }: McFollowProps) {
             render={({ field }) => (
               <FormItem className="flex flex-row justify-between space-x-3 space-y-0 ">
                 <div className="space-y-1 leading-none">
-                  <FormLabel>
-                    Is the beginning of your Menstrual Cycle?
-                  </FormLabel>
+                  <FormLabel>Period Starts Today</FormLabel>
                 </div>
                 <FormControl>
                   <Checkbox
@@ -229,7 +227,7 @@ export default function McFollow({ addEvent, event }: McFollowProps) {
             render={({ field }) => (
               <FormItem className="flex flex-row justify-between space-x-3 space-y-0 ">
                 <div className="space-y-1 leading-none">
-                  <FormLabel>Is the ending of your Menstrual Cycle?</FormLabel>
+                  <FormLabel>Period Ends Today</FormLabel>
                 </div>
                 <FormControl>
                   <Checkbox
@@ -242,7 +240,7 @@ export default function McFollow({ addEvent, event }: McFollowProps) {
           />
           <Accordion type="single" collapsible className="w-full">
             <AccordionItem value="item-1">
-              <AccordionTrigger>Symtoms</AccordionTrigger>
+              <AccordionTrigger>Symptoms</AccordionTrigger>
               <AccordionContent>
                 <FormField
                   control={form.control}
@@ -308,7 +306,7 @@ export default function McFollow({ addEvent, event }: McFollowProps) {
               </AccordionContent>
             </AccordionItem>
             <AccordionItem value="item-2">
-              <AccordionTrigger>Intercourse?</AccordionTrigger>
+              <AccordionTrigger>Intercourse</AccordionTrigger>
               <AccordionContent className="space-y-4">
                 <FormField
                   control={form.control}
@@ -316,7 +314,7 @@ export default function McFollow({ addEvent, event }: McFollowProps) {
                   render={({ field }) => (
                     <FormItem className="flex flex-row justify-between space-x-3 space-y-0 ">
                       <div className="space-y-1 leading-none">
-                        <FormLabel>how many intercourse?</FormLabel>
+                        <FormLabel>How many times</FormLabel>
                       </div>
                       <FormControl>
                         <Input
@@ -335,7 +333,7 @@ export default function McFollow({ addEvent, event }: McFollowProps) {
                   render={({ field }) => (
                     <FormItem className="flex flex-row justify-between space-x-3 space-y-0 ">
                       <div className="space-y-1 leading-none">
-                        <FormLabel>Did you use condom?</FormLabel>
+                        <FormLabel>Condom used</FormLabel>
                       </div>
                       <FormControl>
                         <Checkbox
@@ -352,7 +350,7 @@ export default function McFollow({ addEvent, event }: McFollowProps) {
                   render={({ field }) => (
                     <FormItem className="flex flex-row justify-between space-x-3 space-y-0 ">
                       <div className="space-y-1 leading-none">
-                        <FormLabel>Did you have orgasm?</FormLabel>
+                        <FormLabel>Female orgasm</FormLabel>
                       </div>
                       <FormControl>
                         <Checkbox
@@ -374,7 +372,7 @@ export default function McFollow({ addEvent, event }: McFollowProps) {
                 <FormLabel>Notes</FormLabel>
                 <FormControl>
                   <Textarea
-                    placeholder="Si quieres registrar alguna otra información..."
+                    placeholder="Add note"
                     className="resize-none"
                     {...field}
                   >
@@ -385,7 +383,7 @@ export default function McFollow({ addEvent, event }: McFollowProps) {
               </FormItem>
             )}
           />
-          <Button type="submit">Submit</Button>
+          <Button type="submit">Done!</Button>
         </form>
       </Form>
     </div>
