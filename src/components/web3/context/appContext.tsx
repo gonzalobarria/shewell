@@ -14,7 +14,7 @@ if (!projectId) throw new Error("Project ID is not defined")
 createWeb3Modal({
   wagmiConfig: config,
   projectId,
-  themeMode: "dark",
+  themeMode: "light",
   chainImages: {
     534351:
       "https://upload.wikimedia.org/wikipedia/commons/0/0b/Noun_project_-_Scroll.svg",

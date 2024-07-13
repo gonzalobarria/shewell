@@ -3,121 +3,372 @@
 /* eslint-disable */
 import type {
   BaseContract,
+  BigNumberish,
   BytesLike,
   FunctionFragment,
   Result,
   Interface,
+  EventFragment,
+  AddressLike,
   ContractRunner,
   ContractMethod,
   Listener,
-} from "ethers";
+} from "ethers"
 import type {
   TypedContractEvent,
   TypedDeferredTopicFilter,
   TypedEventLog,
+  TypedLogDescription,
   TypedListener,
   TypedContractMethod,
-} from "./common";
+} from "../common"
 
 export declare namespace SheWell {
-  export type UserStruct = { name: string; content: string; isExists: boolean };
+  export type MenstrualCycleTrackingStruct = {
+    id: BigNumberish
+    title: string
+    eventDate: BigNumberish
+    content: string
+  }
+
+  export type MenstrualCycleTrackingStructOutput = [
+    id: bigint,
+    title: string,
+    eventDate: bigint,
+    content: string
+  ] & { id: bigint; title: string; eventDate: bigint; content: string }
+
+  export type UserStruct = { name: string; content: string; isExists: boolean }
 
   export type UserStructOutput = [
     name: string,
     content: string,
     isExists: boolean
-  ] & { name: string; content: string; isExists: boolean };
+  ] & { name: string; content: string; isExists: boolean }
+
+  export type SuggestionStruct = {
+    startDay: BigNumberish
+    endDay: BigNumberish
+    content: string
+  }
+
+  export type SuggestionStructOutput = [
+    startDay: bigint,
+    endDay: bigint,
+    content: string
+  ] & { startDay: bigint; endDay: bigint; content: string }
+
+  export type SymptomStruct = { id: BigNumberish; name: string; emoji: string }
+
+  export type SymptomStructOutput = [
+    id: bigint,
+    name: string,
+    emoji: string
+  ] & { id: bigint; name: string; emoji: string }
 }
 
 export interface SheWellInterface extends Interface {
   getFunction(
-    nameOrSignature: "getMyUserInfo" | "registerUser"
-  ): FunctionFragment;
+    nameOrSignature:
+      | "addMCTItem"
+      | "addSuggestion"
+      | "addSymptom"
+      | "getLastMCTID"
+      | "getMCTList"
+      | "getMyUserInfo"
+      | "getSuggestions"
+      | "getSymptoms"
+      | "modifyMCTItem"
+      | "owner"
+      | "registerUser"
+      | "renounceOwnership"
+      | "transferOwnership"
+  ): FunctionFragment
 
+  getEvent(nameOrSignatureOrTopic: "OwnershipTransferred"): EventFragment
+
+  encodeFunctionData(
+    functionFragment: "addMCTItem",
+    values: [string, BigNumberish, string]
+  ): string
+  encodeFunctionData(
+    functionFragment: "addSuggestion",
+    values: [BigNumberish, BigNumberish, string]
+  ): string
+  encodeFunctionData(
+    functionFragment: "addSymptom",
+    values: [string, string]
+  ): string
+  encodeFunctionData(
+    functionFragment: "getLastMCTID",
+    values?: undefined
+  ): string
+  encodeFunctionData(functionFragment: "getMCTList", values?: undefined): string
   encodeFunctionData(
     functionFragment: "getMyUserInfo",
     values?: undefined
-  ): string;
+  ): string
+  encodeFunctionData(
+    functionFragment: "getSuggestions",
+    values?: undefined
+  ): string
+  encodeFunctionData(
+    functionFragment: "getSymptoms",
+    values?: undefined
+  ): string
+  encodeFunctionData(
+    functionFragment: "modifyMCTItem",
+    values: [BigNumberish, string, string]
+  ): string
+  encodeFunctionData(functionFragment: "owner", values?: undefined): string
   encodeFunctionData(
     functionFragment: "registerUser",
     values: [string, string]
-  ): string;
+  ): string
+  encodeFunctionData(
+    functionFragment: "renounceOwnership",
+    values?: undefined
+  ): string
+  encodeFunctionData(
+    functionFragment: "transferOwnership",
+    values: [AddressLike]
+  ): string
 
+  decodeFunctionResult(functionFragment: "addMCTItem", data: BytesLike): Result
+  decodeFunctionResult(
+    functionFragment: "addSuggestion",
+    data: BytesLike
+  ): Result
+  decodeFunctionResult(functionFragment: "addSymptom", data: BytesLike): Result
+  decodeFunctionResult(
+    functionFragment: "getLastMCTID",
+    data: BytesLike
+  ): Result
+  decodeFunctionResult(functionFragment: "getMCTList", data: BytesLike): Result
   decodeFunctionResult(
     functionFragment: "getMyUserInfo",
     data: BytesLike
-  ): Result;
+  ): Result
+  decodeFunctionResult(
+    functionFragment: "getSuggestions",
+    data: BytesLike
+  ): Result
+  decodeFunctionResult(functionFragment: "getSymptoms", data: BytesLike): Result
+  decodeFunctionResult(
+    functionFragment: "modifyMCTItem",
+    data: BytesLike
+  ): Result
+  decodeFunctionResult(functionFragment: "owner", data: BytesLike): Result
   decodeFunctionResult(
     functionFragment: "registerUser",
     data: BytesLike
-  ): Result;
+  ): Result
+  decodeFunctionResult(
+    functionFragment: "renounceOwnership",
+    data: BytesLike
+  ): Result
+  decodeFunctionResult(
+    functionFragment: "transferOwnership",
+    data: BytesLike
+  ): Result
+}
+
+export namespace OwnershipTransferredEvent {
+  export type InputTuple = [previousOwner: AddressLike, newOwner: AddressLike]
+  export type OutputTuple = [previousOwner: string, newOwner: string]
+  export interface OutputObject {
+    previousOwner: string
+    newOwner: string
+  }
+  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>
+  export type Filter = TypedDeferredTopicFilter<Event>
+  export type Log = TypedEventLog<Event>
+  export type LogDescription = TypedLogDescription<Event>
 }
 
 export interface SheWell extends BaseContract {
-  connect(runner?: ContractRunner | null): SheWell;
-  waitForDeployment(): Promise<this>;
+  connect(runner?: ContractRunner | null): SheWell
+  waitForDeployment(): Promise<this>
 
-  interface: SheWellInterface;
+  interface: SheWellInterface
 
   queryFilter<TCEvent extends TypedContractEvent>(
     event: TCEvent,
     fromBlockOrBlockhash?: string | number | undefined,
     toBlock?: string | number | undefined
-  ): Promise<Array<TypedEventLog<TCEvent>>>;
+  ): Promise<Array<TypedEventLog<TCEvent>>>
   queryFilter<TCEvent extends TypedContractEvent>(
     filter: TypedDeferredTopicFilter<TCEvent>,
     fromBlockOrBlockhash?: string | number | undefined,
     toBlock?: string | number | undefined
-  ): Promise<Array<TypedEventLog<TCEvent>>>;
+  ): Promise<Array<TypedEventLog<TCEvent>>>
 
   on<TCEvent extends TypedContractEvent>(
     event: TCEvent,
     listener: TypedListener<TCEvent>
-  ): Promise<this>;
+  ): Promise<this>
   on<TCEvent extends TypedContractEvent>(
     filter: TypedDeferredTopicFilter<TCEvent>,
     listener: TypedListener<TCEvent>
-  ): Promise<this>;
+  ): Promise<this>
 
   once<TCEvent extends TypedContractEvent>(
     event: TCEvent,
     listener: TypedListener<TCEvent>
-  ): Promise<this>;
+  ): Promise<this>
   once<TCEvent extends TypedContractEvent>(
     filter: TypedDeferredTopicFilter<TCEvent>,
     listener: TypedListener<TCEvent>
-  ): Promise<this>;
+  ): Promise<this>
 
   listeners<TCEvent extends TypedContractEvent>(
     event: TCEvent
-  ): Promise<Array<TypedListener<TCEvent>>>;
-  listeners(eventName?: string): Promise<Array<Listener>>;
+  ): Promise<Array<TypedListener<TCEvent>>>
+  listeners(eventName?: string): Promise<Array<Listener>>
   removeAllListeners<TCEvent extends TypedContractEvent>(
     event?: TCEvent
-  ): Promise<this>;
+  ): Promise<this>
 
-  getMyUserInfo: TypedContractMethod<[], [SheWell.UserStructOutput], "view">;
+  addMCTItem: TypedContractMethod<
+    [_title: string, _eventDate: BigNumberish, _content: string],
+    [void],
+    "nonpayable"
+  >
+
+  addSuggestion: TypedContractMethod<
+    [_startDay: BigNumberish, _endDay: BigNumberish, _content: string],
+    [void],
+    "nonpayable"
+  >
+
+  addSymptom: TypedContractMethod<
+    [_name: string, _emoji: string],
+    [void],
+    "nonpayable"
+  >
+
+  getLastMCTID: TypedContractMethod<[], [bigint], "view">
+
+  getMCTList: TypedContractMethod<
+    [],
+    [SheWell.MenstrualCycleTrackingStructOutput[]],
+    "view"
+  >
+
+  getMyUserInfo: TypedContractMethod<[], [SheWell.UserStructOutput], "view">
+
+  getSuggestions: TypedContractMethod<
+    [],
+    [SheWell.SuggestionStructOutput[]],
+    "view"
+  >
+
+  getSymptoms: TypedContractMethod<[], [SheWell.SymptomStructOutput[]], "view">
+
+  modifyMCTItem: TypedContractMethod<
+    [_id: BigNumberish, _title: string, _content: string],
+    [void],
+    "nonpayable"
+  >
+
+  owner: TypedContractMethod<[], [string], "view">
 
   registerUser: TypedContractMethod<
     [_name: string, _content: string],
     [void],
     "nonpayable"
-  >;
+  >
+
+  renounceOwnership: TypedContractMethod<[], [void], "nonpayable">
+
+  transferOwnership: TypedContractMethod<
+    [newOwner: AddressLike],
+    [void],
+    "nonpayable"
+  >
 
   getFunction<T extends ContractMethod = ContractMethod>(
     key: string | FunctionFragment
-  ): T;
+  ): T
 
   getFunction(
+    nameOrSignature: "addMCTItem"
+  ): TypedContractMethod<
+    [_title: string, _eventDate: BigNumberish, _content: string],
+    [void],
+    "nonpayable"
+  >
+  getFunction(
+    nameOrSignature: "addSuggestion"
+  ): TypedContractMethod<
+    [_startDay: BigNumberish, _endDay: BigNumberish, _content: string],
+    [void],
+    "nonpayable"
+  >
+  getFunction(
+    nameOrSignature: "addSymptom"
+  ): TypedContractMethod<[_name: string, _emoji: string], [void], "nonpayable">
+  getFunction(
+    nameOrSignature: "getLastMCTID"
+  ): TypedContractMethod<[], [bigint], "view">
+  getFunction(
+    nameOrSignature: "getMCTList"
+  ): TypedContractMethod<
+    [],
+    [SheWell.MenstrualCycleTrackingStructOutput[]],
+    "view"
+  >
+  getFunction(
     nameOrSignature: "getMyUserInfo"
-  ): TypedContractMethod<[], [SheWell.UserStructOutput], "view">;
+  ): TypedContractMethod<[], [SheWell.UserStructOutput], "view">
+  getFunction(
+    nameOrSignature: "getSuggestions"
+  ): TypedContractMethod<[], [SheWell.SuggestionStructOutput[]], "view">
+  getFunction(
+    nameOrSignature: "getSymptoms"
+  ): TypedContractMethod<[], [SheWell.SymptomStructOutput[]], "view">
+  getFunction(
+    nameOrSignature: "modifyMCTItem"
+  ): TypedContractMethod<
+    [_id: BigNumberish, _title: string, _content: string],
+    [void],
+    "nonpayable"
+  >
+  getFunction(
+    nameOrSignature: "owner"
+  ): TypedContractMethod<[], [string], "view">
   getFunction(
     nameOrSignature: "registerUser"
   ): TypedContractMethod<
     [_name: string, _content: string],
     [void],
     "nonpayable"
-  >;
+  >
+  getFunction(
+    nameOrSignature: "renounceOwnership"
+  ): TypedContractMethod<[], [void], "nonpayable">
+  getFunction(
+    nameOrSignature: "transferOwnership"
+  ): TypedContractMethod<[newOwner: AddressLike], [void], "nonpayable">
 
-  filters: {};
+  getEvent(
+    key: "OwnershipTransferred"
+  ): TypedContractEvent<
+    OwnershipTransferredEvent.InputTuple,
+    OwnershipTransferredEvent.OutputTuple,
+    OwnershipTransferredEvent.OutputObject
+  >
+
+  filters: {
+    "OwnershipTransferred(address,address)": TypedContractEvent<
+      OwnershipTransferredEvent.InputTuple,
+      OwnershipTransferredEvent.OutputTuple,
+      OwnershipTransferredEvent.OutputObject
+    >
+    OwnershipTransferred: TypedContractEvent<
+      OwnershipTransferredEvent.InputTuple,
+      OwnershipTransferredEvent.OutputTuple,
+      OwnershipTransferredEvent.OutputObject
+    >
+  }
 }

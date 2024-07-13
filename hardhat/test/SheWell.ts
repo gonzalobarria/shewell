@@ -49,47 +49,36 @@ describe("SheWell", function () {
       assert.equal(suggestions[0].content, content)
     })
 
-    it("Add My Symptoms", async () => {
+    it("Add MCT Item", async () => {
       const { sheWell } = await loadFixture(deploySheWell)
-      const startDate = new Date().getTime()
-      const endDate = new Date().getTime()
 
-      const symptomsUser = [
-        {
-          id: 1,
-          level: 2,
-        },
-        {
-          id: 2,
-          level: 4,
-        },
-      ]
-
-      const intercourse = {
-        useCondom: false,
-        hasOrgasm: true,
-        count: 2,
-      }
-
-      await sheWell.addMySymptom(
-        startDate,
-        endDate,
-        false,
-        false,
-        3,
-        intercourse,
-        "",
-        symptomsUser,
-      )
+      const title = "🍓😧"
+      const content = "contenido CID"
+      const eventDate = new Date().getTime()
+      await sheWell.addMCTItem(title, eventDate, content)
+      const lastMCTID = await sheWell.getLastMCTID()
 
       const myMCTList = await sheWell.getMCTList()
 
+      assert.equal(myMCTList[0].id, lastMCTID)
+    })
+
+    it("Modify MCT Item", async () => {
+      const { sheWell } = await loadFixture(deploySheWell)
+
+      let title = "🍓😧"
+      const content = "contenido CID"
+      const eventDate = new Date().getTime()
+      await sheWell.addMCTItem(title, eventDate, content)
+
+      let myMCTList = await sheWell.getMCTList()
+
+      title = "😧"
+      await sheWell.modifyMCTItem(0, title, content)
+
+      myMCTList = await sheWell.getMCTList()
+
       assert.equal(myMCTList.length, 1)
-
-      const myMCTSymp = await sheWell.getMyMCTSymptomsId(myMCTList[0].id)
-
-      assert.equal(myMCTSymp[1].level, BigInt("4"))
-      assert.equal(myMCTSymp[1].id, BigInt("2"))
     })
   })
 })

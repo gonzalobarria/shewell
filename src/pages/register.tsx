@@ -80,7 +80,10 @@ const Register = () => {
   }
 
   return (
-    <div className="flex flex-1 flex-col p-4 md:p-8 bg-background">
+    <div className="flex flex-1 flex-col p-4 md:p-8 max-w-4xl mx-auto bg-background m-8 shadow-lg rounded-lg gap-y-5">
+      <h1 className="text-xl font-semibold text-center">
+        Register as a User of SheWell
+      </h1>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
           <FormField

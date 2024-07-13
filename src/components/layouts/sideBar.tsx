@@ -1,5 +1,5 @@
 import Link from "next/link"
-import { Home, Package2, ShoppingCart } from "lucide-react"
+import { CalendarDays, Home, Package2 } from "lucide-react"
 
 import {
   Tooltip,
@@ -8,8 +8,6 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip"
 import { ModeToggle } from "@/components/web/general/modeToggle"
-
-const menu: { uri: string }[] = []
 
 const SideBar = () => {
   return (
@@ -36,22 +34,20 @@ const SideBar = () => {
             <TooltipContent side="right">Dashboard</TooltipContent>
           </Tooltip>
         </TooltipProvider>
-        {menu.map(({ uri }, idx) => (
-          <TooltipProvider key={idx}>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Link
-                  href={`/${uri}`}
-                  className="flex h-9 w-9 items-center justify-center rounded-lg bg-accent text-accent-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
-                >
-                  <ShoppingCart className="h-5 w-5" />
-                  <span className="sr-only">{uri}</span>
-                </Link>
-              </TooltipTrigger>
-              <TooltipContent side="right">{uri}</TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
-        ))}
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Link
+                href={`/calendar`}
+                className="flex h-9 w-9 items-center justify-center rounded-lg bg-accent text-accent-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
+              >
+                <CalendarDays className="h-5 w-5" />
+                <span className="sr-only">Calendar</span>
+              </Link>
+            </TooltipTrigger>
+            <TooltipContent side="right">Calendar</TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
       </nav>
       <nav className="mt-auto flex flex-col items-center gap-4 px-2 sm:py-4">
         <ModeToggle />

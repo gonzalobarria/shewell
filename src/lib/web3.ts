@@ -10,3 +10,5 @@ export const getSignedContract = async (
 
   return new ethers.Contract(contractAddress, ABI, signer)
 }
+
+export const getBaseURL = (cid: string) => `https://${cid}.ipfs.w3s.link`

@@ -1,6 +1,7 @@
 import { create } from "@web3-storage/w3up-client"
 import crypto from "crypto"
 import { algorithm } from "./constants"
+import { getBaseURL } from "./web3"
 
 type UploadProps = {
   spaceName: string
@@ -22,7 +23,7 @@ const encryptData = (data: any): EncryptDataProps => {
   return { iv: iv.toString("hex"), encryptedData: encrypted.toString("hex") }
 }
 
-const decrypt = (data: EncryptDataProps) => {
+export const decrypt = (data: EncryptDataProps): string => {
   let iv = Buffer.from(data.iv, "hex")
   let encryptedText = Buffer.from(data.encryptedData, "hex")
   let decipher = crypto.createDecipheriv(algorithm, Buffer.from(key, "hex"), iv)
@@ -50,8 +51,12 @@ export const upload = async ({ spaceName, email, content }: UploadProps) => {
     "encrypted_data.json"
   )
   const blob = new Blob([file], { type: "text/plain" })
-
   const cid = await client.uploadFile(blob)
   console.log(JSON.parse(decrypt({ iv, encryptedData })))
   return cid.toString()
+}
+
+export const listCID = async (cid: string) => {
+  const jsonContent = await fetch(`${getBaseURL(cid)}`)
+  return await jsonContent.json()
 }

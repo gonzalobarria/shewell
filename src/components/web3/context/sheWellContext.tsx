@@ -22,6 +22,14 @@ type SheWellContextType = {
   getMyUserInfo: () => Promise<SheWell.UserStruct | undefined>
   userInfo: SheWell.UserStruct | undefined
   registerUser: (name: string, content: string) => Promise<void>
+  getMCTList: () => Promise<SheWell.MenstrualCycleTrackingStruct[] | undefined>
+  addMCTItem: (
+    title: string,
+    eventDate: number,
+    content: string
+  ) => Promise<void>
+  modifyMCTItem: (id: number, title: string, content: string) => Promise<void>
+  getLastMCTID: () => Promise<number | undefined>
 }
 
 export const SheWellContext = createContext<SheWellContextType | null>(null)
@@ -43,10 +51,9 @@ const SheWellProvider = ({ children }: SheWellProviderProps) => {
         if (!userI.name) router.push("/register")
         else {
           setUserInfo(userI)
-          router.push("/dashboard")
         }
       } else {
-        router.push("/")
+        // router.push("/")
       }
     }
 
@@ -66,9 +73,54 @@ const SheWellProvider = ({ children }: SheWellProviderProps) => {
     return await contract.getMyUserInfo()
   }
 
+  const getMCTList = async (): Promise<
+    SheWell.MenstrualCycleTrackingStruct[] | undefined
+  > => {
+    if (!contract) return
+
+    return await contract.getMCTList()
+  }
+
+  const addMCTItem = async (
+    title: string,
+    eventDate: number,
+    content: string
+  ): Promise<void> => {
+    if (!contract) return
+
+    const tx1 = await contract.addMCTItem(title, eventDate, content)
+    await tx1.wait()
+  }
+
+  const modifyMCTItem = async (
+    id: number,
+    title: string,
+    content: string
+  ): Promise<void> => {
+    if (!contract) return
+
+    const tx1 = await contract.modifyMCTItem(id, title, content)
+    await tx1.wait()
+  }
+
+  const getLastMCTID = async (): Promise<number | undefined> => {
+    if (!contract) return
+
+    return await contract.getLastMCTID()
+  }
+
   return (
     <SheWellContext.Provider
-      value={{ contract, registerUser, getMyUserInfo, userInfo }}
+      value={{
+        contract,
+        registerUser,
+        getMyUserInfo,
+        userInfo,
+        getMCTList,
+        addMCTItem,
+        modifyMCTItem,
+        getLastMCTID,
+      }}
     >
       {children}
     </SheWellContext.Provider>
