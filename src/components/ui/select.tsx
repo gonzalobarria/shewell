@@ -146,9 +146,40 @@ const SelectSeparator = React.forwardRef<
     {...props}
   />
 ))
+
+export interface SelectItem {
+  value: string
+  label: string
+}
+
+interface SelectExtended extends SelectPrimitive.SelectProps {
+  label?: string
+  items: SelectItem[]
+}
+
+function SelectComponent({ label, items, ...rest }: SelectExtended) {
+  return (
+    <Select {...rest}>
+      <SelectTrigger>
+        <SelectValue placeholder={label} />
+      </SelectTrigger>
+      <SelectContent>
+        <SelectGroup>
+          {items.map((item) => (
+            <SelectItem key={item.value} value={item.value}>
+              {item.label}
+            </SelectItem>
+          ))}
+        </SelectGroup>
+      </SelectContent>
+    </Select>
+  )
+}
+
 SelectSeparator.displayName = SelectPrimitive.Separator.displayName
 
 export {
+  SelectComponent,
   Select,
   SelectGroup,
   SelectValue,

@@ -5,6 +5,7 @@ import {
   BreadcrumbLink,
   BreadcrumbList,
 } from "@/components/ui/breadcrumb"
+import ConnectButton from "../web3/connectButton"
 
 const HeaderSection = () => {
   return (
@@ -25,6 +26,7 @@ const TopNav = () => {
   return (
     <header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background px-4 justify-between">
       <HeaderSection />
+      <ConnectButton />
     </header>
   )
 }

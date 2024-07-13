@@ -5,6 +5,8 @@ import { DayPicker } from "react-day-picker"
 import { cn } from "@/lib/utils"
 import { buttonVariants } from "@/components/ui/button"
 
+import { SelectComponent } from "./select"
+
 export type CalendarProps = React.ComponentProps<typeof DayPicker>
 
 function Calendar({
@@ -20,7 +22,7 @@ function Calendar({
       classNames={{
         months: "flex flex-col sm:flex-row space-y-4 sm:space-x-4 sm:space-y-0",
         month: "space-y-4",
-        caption: "flex justify-center pt-1 relative items-center",
+        caption: "flex justify-center pt-1 relative items-center hidden",
         caption_label: "text-sm font-medium",
         nav: "space-x-1 flex items-center",
         nav_button: cn(
@@ -67,4 +69,55 @@ function Calendar({
 }
 Calendar.displayName = "Calendar"
 
-export { Calendar }
+const montsLib: Record<"en", Record<number, string>> = {
+  en: {
+    1: "January",
+    2: "February",
+    3: "March",
+    4: "April",
+    5: "May",
+    6: "June",
+    7: "July",
+    8: "August",
+    9: "September",
+    10: "October",
+    11: "November",
+    12: "December",
+  },
+}
+
+function CalendarComponent({ ...props }: CalendarProps) {
+  const [date, setDate] = React.useState<Date>(new Date())
+
+  return (
+    <>
+      <div className="flex space-x-2">
+        <SelectComponent
+          items={[...(new Array(12) as number[])].map((_, index) => ({
+            label: montsLib["en"][index + 1],
+            value: (index + 1).toString(),
+          }))}
+          value={(new Date(date).getMonth() + 1).toString()}
+          onValueChange={(value) => {
+            setDate(new Date(date.setMonth(parseInt(value) - 1)))
+          }}
+        />
+        <SelectComponent
+          items={[...(new Array(new Date().getFullYear()) as number[])]
+            .map((_, index) => ({
+              label: (index + 1).toString(),
+              value: (index + 1).toString(),
+            }))
+            .slice(1900, new Date().getFullYear() + 1)
+            .reverse()}
+          value={new Date(date).getFullYear().toString()}
+          onValueChange={(value) => {
+            setDate(new Date(date.setFullYear(parseInt(value))))
+          }}
+        />
+      </div>
+      <Calendar disableNavigation {...props} month={date} />
+    </>
+  )
+}
+export { Calendar, CalendarComponent }
