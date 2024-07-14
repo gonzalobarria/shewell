@@ -25,6 +25,8 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion"
 import { Input } from "@/components/ui/input"
+import { ReloadIcon } from "@radix-ui/react-icons"
+import { Dispatch, SetStateAction } from "react"
 
 const formSchema = z.object({
   beginMC: z.boolean().default(false).optional(),
@@ -108,9 +110,16 @@ const symptoms = [
 type McFollowProps = {
   addEvent: (obj: any) => void
   event?: Event & { id: number }
+  isLoading: boolean
+  setIsLoading: Dispatch<SetStateAction<boolean>>
 }
 
-export default function McFollow({ addEvent, event }: McFollowProps) {
+export default function McFollow({
+  addEvent,
+  event,
+  isLoading,
+  setIsLoading,
+}: McFollowProps) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -146,9 +155,11 @@ export default function McFollow({ addEvent, event }: McFollowProps) {
       )
     ) {
       console.log(" vacio ")
+
       return
     }
 
+    setIsLoading(true)
     let title = values.beginMC ? "🩸" : ""
     for (let i = 0; i < values.symptoms.length; i++) {
       title +=
@@ -195,6 +206,7 @@ export default function McFollow({ addEvent, event }: McFollowProps) {
                     onCheckedChange={field.onChange}
                   />
                 </FormControl>
+                <FormMessage />
               </FormItem>
             )}
           />
@@ -383,7 +395,10 @@ export default function McFollow({ addEvent, event }: McFollowProps) {
               </FormItem>
             )}
           />
-          <Button type="submit">Done!</Button>
+          <Button type="submit" disabled={isLoading}>
+            {isLoading && <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />}
+            Done!
+          </Button>
         </form>
       </Form>
     </div>

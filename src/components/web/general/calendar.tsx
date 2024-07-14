@@ -14,6 +14,7 @@ const SWCalendar = () => {
   const { views } = useMemo(() => ({ views: { month: true } }), [])
   const [event, setEvent] = useState<Event & { id: number }>()
   const [startEvent, setStartEvent] = useState<Date>()
+  const [isLoading, setIsLoading] = useState(false)
 
   const [open, setOpen] = useState(false)
   const { getMCTList, addMCTItem, modifyMCTItem, getLastMCTID, contract } =
@@ -103,6 +104,8 @@ const SWCalendar = () => {
       <ModalCal
         open={open}
         setOpen={setOpen}
+        setIsLoading={setIsLoading}
+        isLoading={isLoading}
         addEvent={async (event) => {
           const previousEvents = myEvents.filter(
             (me) => me.start !== event.start
@@ -136,6 +139,7 @@ const SWCalendar = () => {
               },
             ])
           }
+          setIsLoading(false)
           setOpen(false)
         }}
         event={event}
