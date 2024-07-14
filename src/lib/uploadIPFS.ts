@@ -46,11 +46,13 @@ export const upload = async ({ spaceName, email, content }: UploadProps) => {
   const { iv, encryptedData } = encryptData(JSON.stringify(content))
 
   const dataToStore = JSON.stringify({ iv, encryptedData })
-  const file = new File(
-    [Buffer.from(dataToStore, "utf-8")],
-    "encrypted_data.json"
-  )
-  const blob = new Blob([file], { type: "text/plain" })
+  // const file = new File(
+  //   [Buffer.from(dataToStore, "utf-8")],
+  //   "encrypted_data.json"
+  // )
+  // const blob = new Blob([file], { type: "text/plain" })
+
+  const blob = new Blob([dataToStore], { type: "application/json" })
   const cid = await client.uploadFile(blob)
   console.log(JSON.parse(decrypt({ iv, encryptedData })))
   return cid.toString()
