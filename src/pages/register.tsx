@@ -24,6 +24,8 @@ import {
 
 import { cn } from "@/lib/utils"
 import { useRouter } from "next/router"
+import { useState } from "react"
+import { ReloadIcon } from "@radix-ui/react-icons"
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -46,6 +48,7 @@ const formSchema = z.object({
 const Register = () => {
   const router = useRouter()
   const { registerUser } = useSheWellContext()
+  const [isLoading, setIsLoading] = useState(false)
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -55,6 +58,7 @@ const Register = () => {
   })
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    setIsLoading(true)
     const content = {
       averageDurationCycle: values.averageDurationCycle,
       birthdate: values.birthdate,
@@ -73,7 +77,7 @@ const Register = () => {
     const contentID = await response.json()
 
     await registerUser(values.name, contentID.cid)
-
+    setIsLoading(false)
     router.push("/dashboard")
   }
 
@@ -222,7 +226,10 @@ const Register = () => {
               </FormItem>
             )}
           />
-          <Button type="submit">Submit</Button>
+          <Button type="submit" disabled={isLoading}>
+            {isLoading && <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />}
+            Submit
+          </Button>
         </form>
       </Form>
     </div>
