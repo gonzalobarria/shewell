@@ -21,7 +21,7 @@ export function ModalCal({ open, setOpen, addEvent, event }: ModalCalProps) {
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent className="sm:max-w-[500px]">
         <DialogHeader>
-          <DialogTitle>What's new Today?</DialogTitle>
+          <DialogTitle>What&apos;s new Today?</DialogTitle>
           <DialogDescription>Choose all that matters most</DialogDescription>
         </DialogHeader>
         <McFollow addEvent={addEvent} event={event} />
