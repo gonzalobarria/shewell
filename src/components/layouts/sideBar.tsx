@@ -7,7 +7,6 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
-import { ModeToggle } from "@/components/web/general/modeToggle"
 import { useSheWellContext } from "../web3/context/sheWellContext"
 import { useEffect, useState } from "react"
 import { SheWell } from "../abis/types/SheWell"
@@ -68,9 +67,7 @@ const SideBar = () => {
           </>
         )}
       </nav>
-      <nav className="mt-auto flex flex-col items-center gap-4 px-2 sm:py-4">
-        {/* <ModeToggle /> */}
-      </nav>
+      <nav className="mt-auto flex flex-col items-center gap-4 px-2 sm:py-4"></nav>
     </aside>
   )
 }
