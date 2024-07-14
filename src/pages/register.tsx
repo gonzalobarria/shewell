@@ -33,11 +33,9 @@ const formSchema = z.object({
   birthdate: z.date({
     required_error: "A date of birth is required.",
   }),
-  firstDayPeriod: z
-    .date({
-      required_error: "A date of birth is required.",
-    })
-    .optional(),
+  firstDayPeriod: z.date({
+    required_error: "The first day of your cycle is required.",
+  }),
   lastDayPeriod: z
     .date({
       required_error: "A date of birth is required.",
@@ -142,11 +140,7 @@ const Register = () => {
               <FormItem>
                 <FormLabel>Average duration of your cycle</FormLabel>
                 <FormControl>
-                  <Input
-                    type="number"
-                    placeholder="(in days)"
-                    {...field}
-                  />
+                  <Input type="number" placeholder="(in days)" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>

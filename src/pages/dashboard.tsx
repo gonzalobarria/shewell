@@ -4,16 +4,40 @@ import { format } from "date-fns"
 import { Button } from "@/components/ui/button"
 import { useRouter } from "next/router"
 import { toast } from "sonner"
+import { SheWell } from "@/components/abis/types/SheWell"
+import moment from "moment"
 
 const Dashboard = () => {
   const router = useRouter()
-  const { userInfo } = useSheWellContext()
+  const { getMyUserInfo, contract } = useSheWellContext()
   const [suggestion, setSuggestion] = useState()
+  const [userInfo, setUserInfo] = useState<SheWell.UserStruct>()
+  const [cycleDay, setCycleDay] = useState<number>()
 
   useEffect(() => {
     const asyncFunc = async () => {
-      const prompt =
-        "Propone actividades deportivas e intelectuales para una mujer que se encuentre en el día 15 de su periodo, de acuerdo a su signo zodiacal donde su fecha de nacimiento es el 20 de enero de 1987. Habla como que le estuvieras aconsejando qué hacer. Escríbelo en un parrafo pequeño, preciso."
+      const userI = await getMyUserInfo()
+      setUserInfo(userI)
+
+      if (!userI?.isExists) return
+
+      const resp = await fetch(`/api/uploadIPFS?cid=${userI.content}`)
+      let { resource } = await resp.json()
+      resource = JSON.parse(resource)
+
+      const fd = moment(new Date(resource.firstDayPeriod))
+      const today = moment(new Date().getTime())
+      const diffDays = today.diff(fd, "days")
+
+      setCycleDay(diffDays + 1)
+
+      const prompt = `Suggest sports and intellectual activities for a woman who is on the day ${
+        diffDays + 1
+      } of her cycle, according to her zodiac sign, where her date of birth is ${format(
+        new Date(resource.birthdate),
+        "PPP"
+      )}. Speak as if you were advising her on what to do with a very close and feminine tone, as if you were her friend. Write it in a small, precise paragraph. Do not mention her date of birth in the response.`
+
       const response = await fetch("/api/cgpt", {
         method: "post",
         headers: {
@@ -29,24 +53,18 @@ const Dashboard = () => {
     }
 
     asyncFunc()
-  }, [])
+  }, [contract])
 
   return !userInfo ? (
     <div>Loading</div>
   ) : (
     <>
-      <div className="flex  flex-row  max-w-4xl   mx-auto gap-8 justify-end">
-        {/* <div className="flex   p-4 md:p-8 max-w-4xl  bg-background  shadow-lg rounded-lg gap-8 h-fit mt-8">
-          <h2 className="text-xl">
-            Today:{" "}
-            <span className=" font-semibold">{format(new Date(), "PPP")}</span>
-          </h2>
-        </div> */}
-        <div className="flex flex-col  p-4 md:p-8 max-w-4xl  bg-background mt-8 shadow-lg rounded-lg gap-8 ">
+      <div className="flex flex-row max-w-4xl mx-auto gap-8 justify-end">
+        <div className="flex flex-col p-4 md:p-8 max-w-4xl bg-background mt-8 shadow-lg rounded-lg gap-8 ">
           <h2>
             Welcome <strong>{userInfo.name}</strong>, today{" "}
             <strong>{format(new Date(), "PPP")}</strong> is{" "}
-            <strong>day 20</strong> of your cycle
+            <strong>day {cycleDay}</strong> of your cycle
           </h2>
         </div>
       </div>
@@ -54,7 +72,7 @@ const Dashboard = () => {
         <h3 className="text-lg font-semibold">Suggestion for the Day</h3>
         <span>{suggestion}</span>
       </div>
-      <div className="flex  flex-row  max-w-4xl my-8   mx-auto gap-8 justify-center">
+      <div className="flex flex-row max-w-4xl my-8 mx-auto gap-8 justify-center">
         <Button
           size={"lg"}
           className="text-lg"
