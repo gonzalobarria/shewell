@@ -12,33 +12,33 @@ npx hardhat init (Typescript)
 ### Arbitrum
 
 ```shell
-npx hardhat ignition deploy ./ignition/modules/Blog.ts --network arbitrum
+npx hardhat ignition deploy ./ignition/modules/SheWell.ts --network arbitrum
 ```
 
 ### Morph
 
 ```shell
-npx hardhat ignition deploy ./ignition/modules/Blog.ts --network morphHolesky
+npx hardhat ignition deploy ./ignition/modules/SheWell.ts --network morphHolesky
 npx hardhat verify --network morphHolesky 0x8965bafd644598a80d7D895ca9a0Be1b90843461
 ```
 
 ### Scroll
 
 ```shell
-npx hardhat ignition deploy ./ignition/modules/Blog.ts --network scrollSepolia
+npx hardhat ignition deploy ./ignition/modules/SheWell.ts --network scrollSepolia
 npx hardhat verify --network scrollSepolia 0x7062A3006d2C20948590fB3f207de7EB97604511
 ```
 
 ### Sepolia
 
 ```shell
-npx hardhat ignition deploy ./ignition/modules/Blog.ts --network sepolia
+npx hardhat ignition deploy ./ignition/modules/SheWell.ts --network sepolia
 npx hardhat verify --network sepolia 0x8965bafd644598a80d7D895ca9a0Be1b90843461
 ```
 
 ### Zircuit
 
 ```shell
-npx hardhat ignition deploy ./ignition/modules/Blog.ts --network zircuit
+npx hardhat ignition deploy ./ignition/modules/SheWell.ts --network zircuit
 npx hardhat verify --network zircuit 0x8965bafd644598a80d7D895ca9a0Be1b90843461
 ```
